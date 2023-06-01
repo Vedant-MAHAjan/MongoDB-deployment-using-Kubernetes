@@ -1,0 +1,72 @@
+# api version is different for each component
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+  # the label in metadata is used to for organizing resources
+  labels:
+    app: mongo-express
+spec:
+  # single replica of this depolyment
+  replicas: 1
+  selector:
+    # the key-value pair of this matchLabel will be matched to pods' labels
+    matchLabels:
+      app: mongo-express
+  # the template for the pod present in this deployment 
+  template:
+    metadata:
+      # this label should match the matchLabel so that this pod will belong to this deployment
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express
+        # the port on the container which will accept the incoming traffic
+        ports:
+        - containerPort: 8081
+        # environment variables added to be used by mongo-express pod
+        env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          valueFrom:
+            # the username will be referenced from the mongo-secret file
+            secretKeyRef:
+              # this is the name of the secret as in the metadata part of secret
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          valueFrom: 
+            # the username will be referenced from the mongo-secret file
+            secretKeyRef:
+              # this is the name of the secret as in the metadata part of secret
+              name: mongodb-secret
+              key: mongo-root-password
+        - name: ME_CONFIG_MONGODB_SERVER
+          valueFrom: 
+            # configMap of the database will be referenced here
+            configMapKeyRef:
+              name: mongodb-configmap
+              key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express  
+  # type: LoadBalancer means the service is external
+  # external service gives both internal and external IP address to the service
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      
+      port: 8081
+      # this port will be entered in the browser to access this external service
+      targetPort: 8081
+
+      # service can be accessed externally by using any of the cluster nodes' IP addresses on port 30000
+      # node port will be combined along with node IP to access this service
+      # the range of this port number is 30000-32767
+      nodePort: 30000

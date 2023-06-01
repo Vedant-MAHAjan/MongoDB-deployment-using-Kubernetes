@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  # labels are key value pair identifier which are meaningful and attached to a K8S resource
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  # selectors are used to identify that all the pods of a particular matchLabel belong to that deployment
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017
+        # username and password added as environment variables
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            # the username will be referenced from the mongo-secret file
+            secretKeyRef:
+              # this is the name of the secret as in the metadata part of secret
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom: 
+            # the username will be referenced from the mongo-secret file
+            secretKeyRef:
+              # this is the name of the secret as in the metadata part of secret
+              name: mongodb-secret
+              key: mongo-root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  # selectors are used by service to know pods are connected to it
+  # selector attaches a label so that service can figure out which pods to forward the request
+  selector:
+    # this selector matches the label of the pods which was configured above
+    app: mongodb
+  ports:
+    - protocol: TCP
+      # this port is where the service itself would be accessible
+      # this port will be exposed to the external clients to access
+      port: 27017
+      # the service will forward all the request to this targetPort port 
+      # this port should match the containerPort in the container specification
+      targetPort: 27017
+
+
+# Note : The port field uses the ClusterIP of the Service to route traffic to the appropriate Pods
