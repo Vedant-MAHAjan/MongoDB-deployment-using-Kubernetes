@@ -1,4 +1,4 @@
-# Database-deployment-using-Kubernetes
+# Database deployment using Kubernetes
 Deploy MongoDB and Mongo-Express applications using Kubernetes
 
 ## Agenda
