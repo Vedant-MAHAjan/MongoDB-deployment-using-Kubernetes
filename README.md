@@ -1,4 +1,4 @@
-# Database deployment using Kubernetes
+# Database deployment using Kubernetes ☸
 Deploy MongoDB and Mongo-Express applications using Kubernetes
 
 ## Agenda
@@ -20,7 +20,7 @@ Deploy MongoDB and Mongo-Express applications using Kubernetes
 3. 🚀 Pod will request the MongoDB internal service
 4. 🔄 Internal service will request the MongoDB pod
 
-## Order of execution
+## Order of execution 🔢
 
 ### 1. Secrets file for the mongodb pod
 
