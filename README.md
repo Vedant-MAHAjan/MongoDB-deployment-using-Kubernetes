@@ -5,13 +5,13 @@ Deploy MongoDB and Mongo-Express applications using Kubernetes
 
 📋 Consider deploying 2 apps, MongoDB and Mongo-Express
 
-🔗 MongoDB will be connected via an internal service
-
-🔐 MongoDB URL is stored in a ConfigMap
-
-🔑 MongoDB username and password are stored in secrets
-
 🌐 To access Mongo-Express through the browser, an external service will be created
+
+🔐 Mongo-Express will connect to MongoDB using an internal service
+
+🔌 Mongo-Express will have a deployment file where the config map for mongo url and secrets for mongo db username and password will be referenced
+
+🔑 MongoDB will only be accessible by components inside the same cluster, hence it uses internal service 
 
 ## Request Flow from browser to pod
 
