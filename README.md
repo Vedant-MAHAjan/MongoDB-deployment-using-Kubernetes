@@ -87,3 +87,10 @@ kubectl apply -f mongo-express.yaml
 ⚙️ The type section in the spec will be LoadBalancer
 
 #### Note: The deployment and external service are present in the same YAML file
+
+### Question - Why do I need the DB credentials (secrets) both in mongo.yaml and in mongo-express.yaml if mongo-express just connects to mongo?
+Imagine setting a Wi-Fi password on your router. (MongoDB)
+
+And then entering that password on your phone to connect. (Mongo Express)
+
+You’re not re-setting the password on your phone, you’re using it to authenticate.
