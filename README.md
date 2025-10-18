@@ -7,18 +7,20 @@ Deploy MongoDB and Mongo-Express applications using Kubernetes
 
 🌐 To access Mongo-Express through the browser, an external service will be created
 
-🔐 Mongo-Express will connect to MongoDB using an internal service
-
 🔌 Mongo-Express will have a deployment file where the config map for mongo url and secrets for mongo db username and password will be referenced
 
-🔑 MongoDB will only be accessible by components inside the same cluster, hence it uses internal service 
+🔗 The external service will connect to Mongo-Express pod which will forward request to MongoDB internal service
+
+🔐 The internal service will forward the request to pod using the url in configmap file and authenticate the requests using secrets file
+
+🔑 MongoDB will only allow requests from inside the same cluster, hence internal service is used to access it
 
 ## Request Flow from browser to pod
 
 1. 🌐 Browser requests to mongo-express external service
 2. ⚡ External service requests to the mongo-express pod
-3. 🚀 Pod will request the MongoDB internal service
-4. 🔄 Internal service will request the MongoDB pod
+3. 🚀 Mongo-express pod will request the MongoDB internal service
+4. 🔄 MongoDB internal service will request the MongoDB pod
 
 ## Order of execution 🔢
 
