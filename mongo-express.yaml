@@ -66,7 +66,7 @@ spec:
       # this port will be entered in the browser to access this external service
       targetPort: 8081
 
-      # service can be accessed externally by using any of the cluster nodes' IP addresses on port 30000
-      # node port will be combined along with node IP to access this service
+      # Exposes service to the outside world
+      # If you access http://<NodeIP>:30000, it will be routed to: NodePort (30000) ➝ Service:8081 ➝ Pod:8081.
       # the range of this port number is 30000-32767
       nodePort: 30000
